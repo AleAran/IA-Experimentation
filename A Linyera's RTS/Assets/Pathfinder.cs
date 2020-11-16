@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-//Generic Pathfinding logic, in case we want to use multiple algorithm
+/// <summary>
+///Generic Pathfinding logic, in case we want to use multiple algorithm. 
+///To give an example, AStar! Just make it a child from this class, override the virtual functions and add it's specific functions. It helps to diferentiate what each algorithm has in common, and avoids monolith clases. I hate those.
+/// </summary>
 public class Pathfinder
 {
     protected List<Node> mClosedNodes;

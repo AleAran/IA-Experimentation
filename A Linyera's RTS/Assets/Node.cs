@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Node Classs!! Contains all yout needs for A*Star: Parent node, list of close nodes, walkable flag, position in array, aaand scores, to determine its worth to the pathfinder.
+/// </summary>
 public class Node
 {
     Node mParent;

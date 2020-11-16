@@ -3,6 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Soooo, since we are NOT going to do a complete TP, which, I'm rushing like a madman on coke, not unlike my day to day work, being honest. It needs a small explanation:
+/// Grid -> This one contains unites everything, it has both the node array and Pathfinder.
+/// Pathfinder -> this one contains the A*Star algorithm as child class, the idea behind this class is to make M O D U L A R. You don't want to have everything in the same class.
+/// Node -> The smallest component, this class contains it's parents, an array of closest nodes, a score to mention if you can walk on it or no, and scores. 
+/// 
+/// Grid should be used by a manager that will build the grid, and then start the algortihm. Still haven't decided on what to do with the manager, I want to focus first on the FSM.
+/// </summary>
 public class Grid : MonoBehaviour
 {
     Node[,] mNodes;
@@ -23,7 +31,9 @@ public class Grid : MonoBehaviour
 
         buildGrid();
     }
-
+    /// <summary>
+    /// Build grid!
+    /// </summary>
     void buildGrid()
     {
         for (int x = 0; x < mWidth; x++)
@@ -31,11 +41,17 @@ public class Grid : MonoBehaviour
             for (int y = 0; y < mHeight; y++)
             {
                 mNodes[x, y] = new Node(x, y);
-               //Aca creamos Tile
+               //If I had time, I'd put here a logic tile to go with the position of the nodes.. Imagine an GameObject array of tiles.
             }
         }
     }
 
+    /// <summary>
+    /// Calculate path.
+    /// </summary>
+    /// <param name="start">Initial position</param>
+    /// <param name="goal">Position of where we want to go</param>
+    /// <returns></returns>
     public Stack<Vector3> startAlgorithm(Vector3 start, Vector3 goal)
     {
         mPathfinder.start(mNodes[(int)start.x, (int)start.z], //Start

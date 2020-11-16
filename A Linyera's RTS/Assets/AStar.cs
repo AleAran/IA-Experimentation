@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-//AStar Algorithm for Pathfinder
+//AStar Algorithm for Pathfinder, not much to say, there are a thousand of examples. The new addition to the pathfinder (outside of the overrides) is the Heuristic calculation.
 public class AStar : Pathfinder
 {
     List<Node> mOpenedNodes;
