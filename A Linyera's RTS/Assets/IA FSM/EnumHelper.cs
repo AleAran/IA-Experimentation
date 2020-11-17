@@ -7,7 +7,7 @@ using UnityEngine;
 /// </summary>
 public enum Events
 {
-    Move,
+    GoToTarget,
     ReachedGoal,
     FoundMine,
     ReturnToBase,

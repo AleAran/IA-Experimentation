@@ -10,6 +10,7 @@ using UnityEngine.UI;
 /// Node -> The smallest component, this class contains it's parents, an array of closest nodes, a score to mention if you can walk on it or no, and scores. 
 /// 
 /// Grid should be used by a manager that will build the grid, and then an agent should start the algortihm. Still haven't decided on what to do with the manager, I want to focus first on the FSM.
+/// Updated: Decided to not create a manager, it would be adding an extra layer because reasons. So I'll leave the BuildGrid a the start of this class.
 /// </summary>
 public class Grid : MonoBehaviour
 {
@@ -31,6 +32,7 @@ public class Grid : MonoBehaviour
 
         buildGrid();
     }
+
     /// <summary>
     /// Build grid!
     /// </summary>
