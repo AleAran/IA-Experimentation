@@ -25,9 +25,9 @@ public class Mine : MonoBehaviour
 
     public float ExtractGold()
     {
-        mGold -= Time.deltaTime;
         if (mGold > 0)
         {
+            mGold -= Time.deltaTime;
             return Time.deltaTime;
         }
         else

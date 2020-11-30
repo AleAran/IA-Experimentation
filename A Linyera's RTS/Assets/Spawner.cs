@@ -31,6 +31,7 @@ public class Spawner : MonoBehaviour
             {
                 if (mMinersBase.getGold() >= 10)
                 {
+                    mMinersBase.WithdrawalGold(10);
                     Instantiate(mMiner, new Vector2(mMinersBase.transform.position.x, mMinersBase.transform.position.y), Quaternion.identity, gameObject.transform);
                     mSpawnTimer = 0;
                 }
@@ -40,6 +41,7 @@ public class Spawner : MonoBehaviour
             {
                 if (mMinersBase.getGold() >= 5)
                 {
+                    mMinersBase.WithdrawalGold(5);
                     Instantiate(mExplorer, new Vector2(mMinersBase.transform.position.x, mMinersBase.transform.position.y), Quaternion.identity, gameObject.transform);
                     mSpawnTimer = 0;
                 }
