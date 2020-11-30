@@ -36,6 +36,10 @@ public class AStar : Pathfinder
 
             if (nodeToCheck.getScore() + nodeToCheck.getHeuristic() < currentNode.getScore() + currentNode.getHeuristic())
                 currentNode = nodeToCheck;
+            else if (nodeToCheck.getScore() + nodeToCheck.getHeuristic() == currentNode.getScore() + currentNode.getHeuristic() && nodeToCheck.getScore() > currentNode.getScore())
+            {
+                currentNode = nodeToCheck;
+            }
         }
 
         mOpenedNodes.Remove(currentNode);

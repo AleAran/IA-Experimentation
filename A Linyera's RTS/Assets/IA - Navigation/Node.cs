@@ -19,17 +19,17 @@ public class Node
     int mInitialScore = 1;
     int mHeuristic = 0;
 
-    public Node(int col, int row)
+    public Node(int row, int  col)
     {
-        mCol = col;
         mRow = row;
+        mCol = col;
         mAdjacent = new List<Node>();
     }
     public void addToPath(ref Stack<Vector3> path)
     {
         if (mParent != null)
         {
-            path.Push(new Vector3(mParent.getCol(), 0, mParent.getRow()));
+            path.Push(new Vector3(mParent.getRow(), mParent.getCol(), 0));
             mParent.addToPath(ref path);
         }
     }

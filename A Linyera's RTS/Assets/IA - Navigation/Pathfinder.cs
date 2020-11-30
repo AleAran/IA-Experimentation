@@ -62,6 +62,11 @@ public class Pathfinder
         else
             mPath.Clear();
 
+        //Makes sense to do this, but I think we can do better, check later if there's time to see if we can improve this
+        if (!goal.isWall())
+        {
+            mPath.Push(new Vector3(goal.getRow(), goal.getCol(), 0));
+        }
         goal.addToPath(ref mPath);
     }
 
@@ -74,7 +79,7 @@ public class Pathfinder
         Node left = null;
 
         if (currentNode.getCol() != 0)
-            left = mNodes[currentNode.getCol() - 1, currentNode.getRow()];
+            left = mNodes[currentNode.getRow(), currentNode.getCol() - 1];
 
         if (left != null)
         {
@@ -84,8 +89,8 @@ public class Pathfinder
         
         Node right = null;
 
-        if (currentNode.getCol() != mNodes.GetLength(0) - 1)
-            right = mNodes[currentNode.getCol() + 1, currentNode.getRow()];
+        if (currentNode.getCol() != mNodes.GetLength(1) - 1)
+            right = mNodes[currentNode.getRow(), currentNode.getCol() + 1];
 
         if (right != null)
         {
@@ -95,8 +100,8 @@ public class Pathfinder
 
         Node up = null;
 
-        if (currentNode.getRow() != 0)
-            up = mNodes[currentNode.getCol(), currentNode.getRow() - 1];
+        if (currentNode.getRow() != mNodes.GetLength(0) - 1)
+            up = mNodes[currentNode.getRow() + 1, currentNode.getCol()];
 
         if (up != null)
         {
@@ -106,8 +111,8 @@ public class Pathfinder
        
         Node down = null;
 
-        if (currentNode.getRow() != mNodes.GetLength(1) - 1)
-            down = mNodes[currentNode.getCol(), currentNode.getRow() + 1];
+        if (currentNode.getRow() != 0)
+            down = mNodes[currentNode.getRow() - 1, currentNode.getCol()];
 
         if (down != null)
         {

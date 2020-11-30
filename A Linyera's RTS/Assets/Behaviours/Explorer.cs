@@ -5,89 +5,94 @@ using UnityEngine;
 /// <summary>
 /// Skeleton Explorer Class, it uses FSM, and Pathfinding
 /// </summary>
-public class Explorer : MonoBehaviour
+public class Explorer : BaseUnit
 {
-    StateMachine mFSM;
-    States mState;
-
-    public Grid mGrid;
-    protected Stack<Vector3> mPath;
-    protected Vector3 mPositionToMove;
-
-    protected void Start()
+    protected override void Start()
     {
-        mFSM = GetComponent<StateMachine>();
-        mFSM.init((int)States.StatesCount, (int)Events.EventsCount);
+        base.Start();
 
-        mState = (States)mFSM.getState();
-
-        // We register the states and events. This time two, let's keept simple for this example
-        mFSM.setRelation((int)States.Idle, (int)Events.FoundMine, (int)States.Moving);
-        mFSM.setRelation((int)States.Moving, (int)Events.ReachedGoal, (int)States.Idle);
-    }
-
-    void Update()
-    {
-        stateHandler();
+        // We register the states and events. 
+        mFSM.setRelation((int)States.Idle, (int)Events.WakeUp, (int)States.Patrol);
+        mFSM.setRelation((int)States.Patrol, (int)Events.FoundMine, (int)States.Marking);
+        mFSM.setRelation((int)States.Marking, (int)Events.ReachedGoal, (int)States.Patrol);
     }
 
     /// <summary>
     /// This function handles what to do in each state.
     /// </summary>
-    void stateHandler()
+    protected override void stateHandler()
     {
-        mState = (States)mFSM.getState();
+        base.stateHandler();
 
         switch (mState)
         {
             case States.Idle:
-                idle();
+                Idle();
                 break;
 
-            case States.Moving:
-                moving();
+            case States.Patrol:
+                Patrol();
                 break;
 
-            case States.Mining:
-                mining();
+            case States.Marking:
+                Marking();
                 break;
 
-            case States.Returning:
-                returning();
+            default:
+                Debug.LogError("ERROR! Invalid State - " + mState + " not included on on the State Handler");
                 break;
         }
     }
-    void idle()
+
+    protected override void MineFound(GameObject mine)
     {
-        //This is a bit of pseudo code, since we are working this code as template, we don't really have much real values or logic to work with.
-        //This also means that there might be some weird shenaningans on terms of loop and movement, keep in mind in doing this on the flyyyyy!
-        
-        if (Input.GetKey(KeyCode.Space))
+        if (!mine.GetComponent<Mine>().Flagged())
         {
-            //Placeholder value, is the Vector3.Zero, this would be the "destination".
-            mPath = mGrid.startAlgorithm(transform.position, Vector3.zero);
-            mPositionToMove = mPath.Pop(); //Since the Path is a List, we pop it and assign the value to the next position to move
-
-            mFSM.changeState((int)Events.GoToTarget);
+            FieldOfView(mine);
         }
     }
-    void moving()
+
+    void Idle()
     {
-        //we start the moving loop, code is super messy, must properly loop this when we add actual stuff
-        Vector3 pos = Vector3.MoveTowards(transform.position, mPositionToMove, 0.0f);
-        transform.position = pos;
-
-        //once we reach the position, we pop the next one.
-        if (pos == mPositionToMove)
+        mTimer += Time.deltaTime;
+        if (mTimer > MAXTIME)
         {
-            //Once we run out of things to pop, it means we are on the destination, so trigger the reachedGoal event
-            if (mPath.Count > 0)
-                mPositionToMove = mPath.Pop();
-            else
-                mFSM.changeState((int)Events.ReachedGoal);
+            mTimer = 0;
+            mPathIsValid = false;
+            mFSM.changeState((int)Events.WakeUp);
         }
     }
 
-    void mining() { }
-    void returning() { }
+    private void Patrol()
+    {
+        if (mPathIsValid)
+        {
+            Moving();
+        }
+
+        if (transform.position == mGoal || !mPathIsValid)
+        {
+            if (mPath != null)
+            {
+                mPath.Clear();
+            }
+
+            mGoal = new Vector3(Random.Range(0, mGrid.getWidth()), Random.Range(0, mGrid.getHeight()), 0);
+            Setpath(mGoal);
+        }
+    }
+
+    void Marking()
+    {
+        Moving();
+
+        if (transform.position == mTargetMine.transform.position)
+        {
+            mTargetMine.GetComponent<Mine>().ChangeColor();
+            mTargetMine = null;
+
+            mFSM.changeState((int)Events.ReachedGoal);
+            mPathIsValid = false;
+        }
+    }
 }

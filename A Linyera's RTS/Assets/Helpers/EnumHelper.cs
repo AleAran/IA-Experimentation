@@ -7,17 +7,21 @@ using UnityEngine;
 /// </summary>
 public enum Events
 {
+    WakeUp,
     GoToTarget,
     ReachedGoal,
     FoundMine,
+    NothingToSee,
     ReturnToBase,
+    KeepMining,
     EventsCount
 }
 
 public enum States
 {
     Idle,
-    Moving,
+    Patrol,
+    Marking,
     Mining,
     Returning,
     StatesCount
