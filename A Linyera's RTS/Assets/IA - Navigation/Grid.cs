@@ -22,10 +22,13 @@ public class Grid : MonoBehaviour
     public GameObject mMine;
     public GameObject mBase;
 
-    public Spawner mSpawner;
-
     public int mTotalRows;
     public int mTotalCols;
+
+    public int mReduceDirt = 12;
+    public int mReduceSand = 10;
+    public int mReduceWall = 20;
+
 
     void Start()
     {
@@ -39,14 +42,13 @@ public class Grid : MonoBehaviour
     /// </summary>
     void buildGrid()
     {
-        int mineCounter = 0;
         for (int x = 0; x < mTotalRows; x++)
         {
             for (int y = 0; y < mTotalCols; y++)
             {
                 //God, have mercy of my soul, for I've made crimes against legibility. Long story short, you if the first case is true, you create a DirtTile, if not,
                 //another comparison is made with random values, if true, create sand tile, if false, create Grass.
-                GameObject selectedTile = (Random.Range(0, 12) == 2)? mDirtTile : (Random.Range(0, 10) == 1) ? mSandTile : mGrassTile;
+                GameObject selectedTile = (Random.Range(0, mReduceDirt) == 2)? mDirtTile : (Random.Range(0, mReduceSand) == 1) ? mSandTile : mGrassTile;
 
                 //We instantiate a tile, initialize it and add it to the Nodes List.
                 Tile tile = Instantiate(selectedTile, new Vector2(x, y), Quaternion.identity, gameObject.transform).GetComponent<Tile>();
@@ -55,16 +57,8 @@ public class Grid : MonoBehaviour
 
                 bool isBase = (x == base.transform.position.x && y == base.transform.position.y) ? true : false;
 
-                //First Mines are set here
-                bool isMine = (Random.Range(0, 10) == 3 && mineCounter<2) ? Instantiate(mMine, new Vector2(x, y), Quaternion.identity, gameObject.transform) : false;
-                if (isMine)
-                {
-                    mineCounter++;
-                    mSpawner.IncreaseMineCount();
-                }
-
                 //Random Walls appear blocking progress, just like real life! Who needs fancy graphics?
-                makeWall(x, y, Random.Range(0,20) == 2 && !isMine && !isBase, tile.gameObject);           
+                makeWall(x, y, Random.Range(0, mReduceWall) == 2 && !isBase, tile.gameObject);           
             }
         }
     }
@@ -79,7 +73,7 @@ public class Grid : MonoBehaviour
     {
         pathFinder.start(mNodes[(int)start.x, (int)start.y], //Start
                           mNodes[(int)goal.x, (int)goal.y], //Goal
-                          (Node[,])mNodes.Clone()); //Node List
+                          (Node[,])mNodes.Clone()); //Node List, a copy, we don't want to mess with the original.
 
         pathFinder.buildPath(mNodes[(int)goal.x, (int)goal.y]);
 

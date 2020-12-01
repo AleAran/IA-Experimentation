@@ -4,24 +4,29 @@ using UnityEngine;
 
 public class Mine : MonoBehaviour
 {
-    // Start is called before the first frame update
+    public float mGold;
+
     private bool mIsFlagged;
     private bool mHasGold;
-    public float mGold;
+    private bool mBeingMined;
 
     private Spawner mSpawner;
 
     void Start()
     {
+        mSpawner = GameObject.FindGameObjectWithTag("Spawner").GetComponent<Spawner>();
+
         mIsFlagged = false;
         mHasGold = true;
-        mSpawner = GameObject.FindGameObjectWithTag("Spawner").GetComponent<Spawner>();
+        mBeingMined = false;
     }
 
-    public void ChangeColor() {
+    public void ChangeColor()
+    {
         GetComponent<SpriteRenderer>().color = Color.cyan;
         mIsFlagged = true;
     }
+    public void BeingMined(bool beingMined) { mBeingMined = beingMined; }
 
     public float ExtractGold()
     {
@@ -41,6 +46,6 @@ public class Mine : MonoBehaviour
     }
 
     public bool Flagged() { return mIsFlagged; }
-
     public bool HasGold() { return mHasGold; }
+    public bool IsBeingMined() { return mBeingMined; }
 }

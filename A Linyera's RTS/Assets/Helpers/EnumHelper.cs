@@ -11,7 +11,6 @@ public enum Events
     GoToTarget,
     ReachedGoal,
     FoundMine,
-    NothingToSee,
     ReturnToBase,
     KeepMining,
     EventsCount

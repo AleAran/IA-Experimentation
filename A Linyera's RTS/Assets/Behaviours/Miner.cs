@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class Miner : BaseUnit
 {
-    public float mBagCapacity;
+    private static int STORAGE_TIME = 1;
+
     private float mCollectedGold;
+    public float mBagCapacity;
 
     private MinersBase mMinersHQ;
 
@@ -20,7 +22,6 @@ public class Miner : BaseUnit
         mFSM.setRelation((int)States.Idle, (int)Events.WakeUp, (int)States.Patrol);
         mFSM.setRelation((int)States.Patrol, (int)Events.FoundMine, (int)States.Mining);
         mFSM.setRelation((int)States.Mining, (int)Events.ReturnToBase, (int)States.Returning);
-        mFSM.setRelation((int)States.Mining, (int)Events.NothingToSee, (int)States.Patrol);
         mFSM.setRelation((int)States.Returning, (int)Events.KeepMining, (int)States.Mining);
         mFSM.setRelation((int)States.Returning, (int)Events.ReachedGoal, (int)States.Patrol);
     }
@@ -58,12 +59,10 @@ public class Miner : BaseUnit
 
     protected override void MineFound(GameObject mine)
     {
-        if (mine.GetComponent<Mine>().Flagged() && mine.GetComponent<Mine>().HasGold())
+        if (mine.GetComponent<Mine>().Flagged() && mine.GetComponent<Mine>().HasGold() && !mine.GetComponent<Mine>().IsBeingMined())
         {
             FieldOfView(mine);
         }
-        else
-            mFSM.changeState((int)Events.NothingToSee);
     }
 
     void Idle()
@@ -103,9 +102,11 @@ public class Miner : BaseUnit
             if (mCollectedGold < mBagCapacity && mTargetMine.GetComponent<Mine>().HasGold())
             {
                 mCollectedGold += mTargetMine.GetComponent<Mine>().ExtractGold();
+                mTargetMine.GetComponent<Mine>().BeingMined(true);
             }
             else
             {
+                mTargetMine.GetComponent<Mine>().BeingMined(false);
                 Setpath(mMinersHQ.transform.position);
                 mFSM.changeState((int)Events.ReturnToBase);
             }
@@ -119,20 +120,26 @@ public class Miner : BaseUnit
     {
         if (transform.position == mMinersHQ.transform.position)
         {
+            mTimer += Time.deltaTime;
             mMinersHQ.DepositGold(mCollectedGold);
             mCollectedGold = 0;
 
-            if (mTargetMine.GetComponent<Mine>().HasGold())
+            if (mTimer > STORAGE_TIME)
             {
-                mPath.Clear();
-                Setpath(mTargetMine.transform.position);
-                mFSM.changeState((int)Events.KeepMining);
-            }
-            else
-            {
-                mTargetMine = null;
-                mPathIsValid = false;
-                mFSM.changeState((int)Events.ReachedGoal);
+                if (mTargetMine.GetComponent<Mine>().HasGold())
+                {
+                    mPath.Clear();
+                    Setpath(mTargetMine.transform.position);
+                    mFSM.changeState((int)Events.KeepMining);
+                }
+                else
+                {
+                    mTargetMine = null;
+                    mPathIsValid = false;
+                    mFSM.changeState((int)Events.ReachedGoal);
+                }
+
+                mTimer = 0;
             }
 
         }

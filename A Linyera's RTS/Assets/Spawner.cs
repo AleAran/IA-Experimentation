@@ -10,7 +10,7 @@ public class Spawner : MonoBehaviour
     public GameObject mExplorer;
     public GameObject mMiner;
     public GameObject mNewMine;
-    public int mMaxMines;
+    public int mMaxMines = 3;
 
     private float mSpawnTimer;
     private int mMinesAmount;
@@ -18,6 +18,17 @@ public class Spawner : MonoBehaviour
     {
         mSpawnTimer = 0.0f;
         mMinesAmount = 0;
+
+        for (int i = mMinesAmount; i < mMaxMines; i++)
+        {
+            Vector2 minePOsition = new Vector2(Random.Range(0, mGrid.getWidth()), Random.Range(0, mGrid.getHeight()));
+
+            if (!mGrid.isWall((int)minePOsition.x, (int)minePOsition.y))
+            {
+                Instantiate(mNewMine, new Vector2(minePOsition.x, minePOsition.y), Quaternion.identity, gameObject.transform);
+                mMinesAmount++;
+            }
+        }
     }
 
     // Update is called once per frame
@@ -47,15 +58,14 @@ public class Spawner : MonoBehaviour
                 }
             }
 
-            while (mMinesAmount < 3) 
+            for (int i = mMinesAmount; i < mMaxMines; i++)
             {
                 Vector2 minePOsition = new Vector2(Random.Range(0, mGrid.getWidth()), Random.Range(0, mGrid.getHeight()));
-               
+
                 if (!mGrid.isWall((int)minePOsition.x, (int)minePOsition.y))
                 {
                     Instantiate(mNewMine, new Vector2(minePOsition.x, minePOsition.y), Quaternion.identity, gameObject.transform);
                     mMinesAmount++;
-
                 }
             }
         }
