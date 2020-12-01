@@ -58,10 +58,17 @@ public class BaseUnit : MonoBehaviour
         {
             mTargetMine = mine;
 
-            mPath.Clear();
-            Setpath(mTargetMine.transform.position);
+            // pew pew pew... I cast a Ray, and pray for it to reach fair winds and don't return as null.
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, - Vector2.up);
 
-            mFSM.changeState((int)Events.FoundMine);
+            // Does it hit? IS IT WALL?!
+            if (hit.collider != null && !mGrid.isWall((int)hit.point.x, (int)hit.point.y))
+            {
+                mPath.Clear();
+                Setpath(mTargetMine.transform.position);
+                mFSM.changeState((int)Events.FoundMine);
+
+            }
         }
     }
 
@@ -84,7 +91,7 @@ public class BaseUnit : MonoBehaviour
         Vector3 newPosition = Vector3.MoveTowards(transform.position, mPositionToMove, mSpeed * Time.deltaTime);
         transform.position = newPosition;
 
-        //Googled a lot, and turns out, this is the easiest method to rotate in 2D 
+        //Googled a lot, and turns out, this is the easiest method to rotate in 2D. I hate this... Does Unity feeds on my misery?
         Vector3 dir = mPositionToMove - transform.position;
         float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);

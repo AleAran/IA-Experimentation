@@ -73,7 +73,7 @@ public class Grid : MonoBehaviour
     {
         pathFinder.start(mNodes[(int)start.x, (int)start.y], //Start
                           mNodes[(int)goal.x, (int)goal.y], //Goal
-                          (Node[,])mNodes.Clone()); //Node List, a copy, we don't want to mess with the original.
+                          mNodes); //Node List, a copy, we don't want to mess with the original.
 
         pathFinder.buildPath(mNodes[(int)goal.x, (int)goal.y]);
 

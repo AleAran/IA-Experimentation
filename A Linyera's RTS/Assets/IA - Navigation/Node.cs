@@ -10,7 +10,7 @@ public class Node
     Node mParent;
     protected List<Node> mAdjacent;
 
-    bool mWalkable = false;
+    bool mWalkable = true;
 
     protected int mCol;
     protected int mRow;
