@@ -151,7 +151,7 @@ public class Miner : BaseUnit
             //Forced one second delay to give better visual feedback of the miner doing the deposit at the base. After all, there's art in making your work look harder.
             if (mTimer > STORAGE_TIME)
             {
-                if (mTargetMine.GetComponent<Mine>().HasGold())
+                if (mTargetMine.GetComponent<Mine>().HasGold() && !mTargetMine.GetComponent<Mine>().IsBeingMined())
                 {
                     mPath.Clear();
                     Setpath(mTargetMine.transform.position);
