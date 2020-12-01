@@ -2,6 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// What did you expect, to handcraft each unit like if it where a local ice cream shop? Nah, we use base clases, and only differentiate when needed.
+/// Be lazy. Be smart.
+/// All units contain their own path, after all, we don't want to share.
+/// </summary>
 public class BaseUnit : MonoBehaviour
 {
     protected StateMachine mFSM;
@@ -49,8 +54,16 @@ public class BaseUnit : MonoBehaviour
         mState = (States)mFSM.getState();
     }
 
+    /// <summary>
+    /// We found a Mine... What do we do with it?
+    /// </summary>
+    /// <param name="mine">Target Mine</param>
     protected virtual void MineFound(GameObject mine) { }
 
+    /// <summary>
+    /// I'm seeing a mine? Or Am I staring at the wall, contemplating the cosmic horrors that haunts my very essence after drinking Fernet with Manaos?.
+    /// </summary>
+    /// <param name="mine">Target Mine</param>
     protected virtual void FieldOfView(GameObject mine)
     {
         float vectorAngle = Vector2.Angle(transform.up, mine.transform.position);
@@ -72,6 +85,11 @@ public class BaseUnit : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// We have a goal, now, let us see if we have a Path.
+    /// If we don't, try again buddy.
+    /// </summary>
+    /// <param name="goal"></param>
     protected virtual void Setpath(Vector3 goal)
     {
         mPath = mGrid.startAlgorithm(transform.position, goal, mPathFinder);
@@ -85,6 +103,10 @@ public class BaseUnit : MonoBehaviour
         else
             mPathIsValid = false;
     }
+
+    /// <summary>
+    /// Move Towards your goal, at your own pace, once you made your first steap, look for the next in your path.
+    /// </summary>
     protected virtual void Moving()
     {
 
@@ -103,6 +125,11 @@ public class BaseUnit : MonoBehaviour
                 mPositionToMove = mPath.Pop();
         }
     }
+
+    /// <summary>
+    /// Standard collision affair. Nothing remarkable.
+    /// </summary>
+    /// <param name="col"></param>
     protected virtual void OnCollisionEnter2D(Collision2D col)
     {
         if (col.gameObject.tag == "Mine" && mState == States.Patrol)

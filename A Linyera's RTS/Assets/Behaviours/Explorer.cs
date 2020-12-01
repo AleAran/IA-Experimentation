@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Skeleton Explorer Class, it uses FSM, and Pathfinding
+/// Explorer, you want something, this unit should find it.
+/// emphasis on should.
 /// </summary>
 public class Explorer : BaseUnit
 {
@@ -44,6 +45,9 @@ public class Explorer : BaseUnit
         }
     }
 
+    /// <summary>
+    /// The functions below have pretty simple logic, no need to bother here.
+    /// </summary>
     protected override void MineFound(GameObject mine)
     {
         if (!mine.GetComponent<Mine>().Flagged())

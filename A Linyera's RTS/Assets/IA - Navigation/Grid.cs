@@ -6,11 +6,11 @@ using UnityEngine.UI;
 /// <summary>
 /// Soooo, since I'm rushing like a madman on coke, not unlike my day to day work, being honest. It needs a small explanation:
 /// Grid -> This one contains unites everything, it has both the node array and Pathfinder.
-/// Pathfinder -> this one contains the A*Star algorithm as child class, the idea behind this class is to make M O D U L A R. You don't want to have everything in the same class.
+/// Pathfinder -> Base Algorithm this one can be intialized as an AStar algorithm, the idea behind this class is to make M O D U L A R. You don't want to have everything in the same class.
+/// AStar -> One of the most used pathfinding Algorithms, uses herustics and scores to define which node has priority.
 /// Node -> The smallest component, this class contains it's parents, an array of closest nodes, a score to mention if you can walk on it or no, and scores. 
 /// 
-/// Grid should be used by a manager that will build the grid, and then an agent should start the algortihm. Still haven't decided on what to do with the manager, I want to focus first on the FSM.
-/// Updated: Decided to not create a manager, it would be adding an extra layer because reasons. So I'll leave the BuildGrid a the start of this class.
+/// Updated: Some stuff here is outdated with the latest changes, but I'll keep it since it's a good panoramic view of the general idea;
 /// </summary>
 public class Grid : MonoBehaviour
 {
@@ -42,6 +42,8 @@ public class Grid : MonoBehaviour
     /// </summary>
     void buildGrid()
     {
+        GameObject minerBase = GameObject.FindGameObjectWithTag("MinersBase");
+
         for (int x = 0; x < mTotalRows; x++)
         {
             for (int y = 0; y < mTotalCols; y++)
@@ -55,7 +57,7 @@ public class Grid : MonoBehaviour
                 tile.Init(x, y);
                 mNodes[x, y] = tile.mNode;
 
-                bool isBase = (x == base.transform.position.x && y == base.transform.position.y) ? true : false;
+                bool isBase = (x == minerBase.transform.position.x && y == minerBase.transform.position.y) ? true : false;
 
                 //Random Walls appear blocking progress, just like real life! Who needs fancy graphics?
                 makeWall(x, y, Random.Range(0, mReduceWall) == 2 && !isBase, tile.gameObject);           
@@ -64,7 +66,7 @@ public class Grid : MonoBehaviour
     }
 
     /// <summary>
-    /// Calculate path.
+    /// Initialize the Pathfinding Algorithm, Calculate path and build it.
     /// </summary>
     /// <param name="start">Initial position</param>
     /// <param name="goal">Position of where we want to go</param>

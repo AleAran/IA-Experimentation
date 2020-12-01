@@ -2,6 +2,27 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+///
+/// Cold, the air and water flowing
+/// Hard, the land we call our home
+/// Push, to keep the dark from coming
+/// Feel, the weight of what we owe
+/// 
+/// This, the song of sons and daughters
+/// Hide, the heart of who we are
+/// Making peace to build our future
+/// Strong, united, working 'til we fall
+/// 
+/// And we all lift, and we're all adrift
+/// Together, together
+/// Through the cold mist, 'til we're lifeless
+/// Together, together
+/// 
+/// - Space Miners, complaining about their crippling space debt.
+/// 
+/// Class inherits from BaseUnit, and adds it's own tweaks to find gold on mines discovered by the explorer.
+/// </summary>
 public class Miner : BaseUnit
 {
     private static int STORAGE_TIME = 1;
@@ -56,7 +77,9 @@ public class Miner : BaseUnit
                 break;
         }
     }
-
+    /// <summary>
+    /// Most of the funtions below don't require any explanation.
+    /// </summary>
     protected override void MineFound(GameObject mine)
     {
         if (mine.GetComponent<Mine>().Flagged() && mine.GetComponent<Mine>().HasGold() && !mine.GetComponent<Mine>().IsBeingMined())
@@ -103,6 +126,7 @@ public class Miner : BaseUnit
             {
                 mCollectedGold += mTargetMine.GetComponent<Mine>().ExtractGold();
                 mTargetMine.GetComponent<Mine>().BeingMined(true);
+                mTargetMine.GetComponent<Mine>().CheckFunds();
             }
             else
             {
@@ -124,6 +148,7 @@ public class Miner : BaseUnit
             mMinersHQ.DepositGold(mCollectedGold);
             mCollectedGold = 0;
 
+            //Forced one second delay to give better visual feedback of the miner doing the deposit at the base. After all, there's art in making your work look harder.
             if (mTimer > STORAGE_TIME)
             {
                 if (mTargetMine.GetComponent<Mine>().HasGold())

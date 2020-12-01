@@ -74,6 +74,7 @@ public class Pathfinder
     {
         return mPath;
     }
+
     void findCurrentNodeAdjacents(Node currentNode)
     {
         Node left = null;
