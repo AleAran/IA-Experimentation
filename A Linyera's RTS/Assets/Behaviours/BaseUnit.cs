@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// What did you expect, to handcraft each unit like if it where a local ice cream shop? Nah, we use base clases, and only differentiate when needed.
+/// What did you expect, to handcraft each unit like if we wnere a local ice cream shop? Nah, we use base clases, and only differentiate when needed.
 /// Be lazy. Be smart.
 /// All units contain their own path, after all, we don't want to share.
 /// </summary>
@@ -11,9 +11,6 @@ public class BaseUnit : MonoBehaviour
 {
     protected StateMachine mFSM;
     protected States mState;
-
-    public float mDetectionAngle;
-    public float mSpeed;
 
     protected Grid mGrid;
     protected Stack<Vector3> mPath;
@@ -27,6 +24,9 @@ public class BaseUnit : MonoBehaviour
 
     protected static int MAXTIME = 5;
     protected float mTimer;
+
+    public float mDetectionAngle;
+    public float mSpeed;
 
     protected virtual void Start()
     {
@@ -94,7 +94,7 @@ public class BaseUnit : MonoBehaviour
     {
         mPath = mGrid.startAlgorithm(transform.position, goal, mPathFinder);
 
-        //Sanity check, we always need these in code and are easy to afford. Shame I can't same about therapy.
+        //Sanity check, we always need these in code and are easy to afford. Shame I can't say the same about therapy.
         if (mPath.Count > 0)
         {
             mPositionToMove = mPath.Pop(); //Since the Path is a List, we pop it and assign the value to the next position to move
@@ -105,7 +105,7 @@ public class BaseUnit : MonoBehaviour
     }
 
     /// <summary>
-    /// Move Towards your goal, at your own pace, once you made your first steap, look for the next in your path.
+    /// Move Towards your goal, at your own pace, once you made your first step, look for the next one in your path.
     /// </summary>
     protected virtual void Moving()
     {
@@ -113,7 +113,7 @@ public class BaseUnit : MonoBehaviour
         Vector3 newPosition = Vector3.MoveTowards(transform.position, mPositionToMove, mSpeed * Time.deltaTime);
         transform.position = newPosition;
 
-        //Googled a lot, and turns out, this is the easiest method to rotate in 2D. I hate this... Does Unity feeds on my misery?
+        //Googled a lot, and turns out, this is the easiest method to rotate in 2D. I hate this... Does Unity feed on my misery?
         Vector3 dir = mPositionToMove - transform.position;
         float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);

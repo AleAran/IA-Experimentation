@@ -48,7 +48,7 @@ public class Grid : MonoBehaviour
         {
             for (int y = 0; y < mTotalCols; y++)
             {
-                //God, have mercy of my soul, for I've made crimes against legibility. Long story short, you if the first case is true, you create a DirtTile, if not,
+                //God, have mercy of my soul, for I've commited crimes against legibility. Long story short, you if the first case is true, you create a DirtTile, if not,
                 //another comparison is made with random values, if true, create sand tile, if false, create Grass.
                 GameObject selectedTile = (Random.Range(0, mReduceDirt) == 2)? mDirtTile : (Random.Range(0, mReduceSand) == 1) ? mSandTile : mGrassTile;
 

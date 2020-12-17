@@ -4,7 +4,7 @@ using UnityEngine;
 
 /// <summary>
 /// Explorer, you want something, this unit should find it.
-/// emphasis on should.
+/// Emphasis on "should".
 /// </summary>
 public class Explorer : BaseUnit
 {

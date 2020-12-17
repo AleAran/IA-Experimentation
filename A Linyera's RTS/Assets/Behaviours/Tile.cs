@@ -2,17 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Simple Tile class, contains Node and allow us to handle the GameObject itself.
+/// </summary>
 public class Tile : MonoBehaviour
 {
-    // Start is called before the first frame update
     public int mInitialScore;
 
     public Node mNode { get; set; }
 
-    void Start()
-    {
-
-    }
     public void Init(int x, int y) 
     {
         mNode = new Node(x,y);

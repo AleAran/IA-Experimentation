@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 /// <summary>
-/// Feed it gold, and new Units shall rise to do their dissapoiting work.
+/// Feed it gold, and new Units shall rise to do their disappointing work.
 /// Outisde of the unit instantiation, it also handles the addition of more mines.
 /// </summary>
 public class Spawner : MonoBehaviour
