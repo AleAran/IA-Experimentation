@@ -34,7 +34,7 @@ public enum BtNodeType
 }
 public enum BTNodeState
 {
-    Done,
+    Ready,
     Running,
     Error,
     NodeStateCount

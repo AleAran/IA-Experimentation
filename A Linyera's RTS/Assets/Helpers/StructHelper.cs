@@ -10,7 +10,7 @@ using UnityEngine;
 public struct SerializedNode
 {
     public string mFuntionName;
-    public int mNodeType;
+    public BtNodeType mNodeType;
     public int mChildCount;
     public int mIndexofFirstChild;
 }

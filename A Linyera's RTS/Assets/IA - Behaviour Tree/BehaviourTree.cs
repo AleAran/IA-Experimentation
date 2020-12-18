@@ -8,12 +8,12 @@ using UnityEngine;
 /// 
 /// Also, chances are the amount of sugar in my blood after drinking so much cofee is making me delirious
 /// 
-/// Anyway, This is the base of the BT, a simple loader. The idea is simple, we are going to create an simple editor (BTGenerator, a scriptobject), then use the it to create a tree for a GameObject. Then, on the gameObject, we load it's tree by using BTSetup.
+/// Anyway, This is the base of the BT, a basic loader. The idea goes like this: We are going to create an simple editor (BTGenerator, a scriptobject), then use the it to create a tree for a GameObject. Then, on the gameObject, we load it's tree by using BTSetup.
 /// This is barebones, and later on, we are going to expand the usages.
 /// </summary>
 public class BehaviourTree : MonoBehaviour
 {
-    BTNode mRoot;
+    BTBaseNode mRoot;
     public BTGenerator mBTLoader;
 
     public void BTSetup<T>(T editedObject)
@@ -21,7 +21,7 @@ public class BehaviourTree : MonoBehaviour
         mBTLoader.loadTree<T>(0, out mRoot, editedObject);
     }
 
-    public BTNode getRoot()
+    public BTBaseNode getRoot()
     {
         return mRoot;
     }

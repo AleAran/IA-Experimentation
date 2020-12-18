@@ -4,32 +4,31 @@ using UnityEngine;
 using System;
 using System.Reflection;
 
-[CreateAssetMenu(menuName = "test")]
 public class BTGenerator : ScriptableObject
 {
     public List<SerializedNode> mSerializedNode = new List<SerializedNode>();
 
-    public int loadTree<T>(int index, out BTNode node, T instanceType)
+    public int loadTree<T>(int index, out BTBaseNode node, T instanceType)
     {
         SerializedNode serializableNode = mSerializedNode[index];
 
-        switch ((BtNodeType)serializableNode.mNodeType)
+        switch (serializableNode.mNodeType)
         {
             //We have this as placeholder until we have more nodestypes created
             case BtNodeType.Sequencer:
-                node = new BTNode();
+                node = new SequenceNode();
                 break;
             case BtNodeType.Selector:
-                node = new BTNode();
+                node = new BTBaseNode();
                 break;
             default:
-                node = new BTNode();
+                node = new BTBaseNode();
                 break;
         }
 
         for (int i = 0; i < serializableNode.mChildCount; i++)
         {
-            BTNode childNode;
+            BTBaseNode childNode;
             index = loadTree<T>(++index, out childNode, instanceType);
             node.addChild(childNode);
         }
